@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: hotwave
+    runtime: python
+    plan: free
+    buildCommand: >-
+      python -c "import zipfile; zipfile.ZipFile('hotwave-render.zip').extractall('.')" &&
+      pip install -r requirements.txt
+    startCommand: python app.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: HOTWAVE_SECRET
+        generateValue: true
